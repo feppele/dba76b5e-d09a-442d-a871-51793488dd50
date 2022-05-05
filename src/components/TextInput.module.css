@@ -1,0 +1,13 @@
+
+.textInput{
+
+    padding-left: 10px;
+    width: 200px;
+    height: 22px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid rgb(209, 209, 209);
+}
+.textInput:focus{
+    box-shadow: 0 0 10px grey ;
+}

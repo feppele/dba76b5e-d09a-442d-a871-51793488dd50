@@ -1,0 +1,35 @@
+.container{
+    z-index: 100;
+    width: 100%;
+    background-color: white;
+
+    display: flex;
+    justify-content: center;
+
+
+}
+
+.box{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 70%;
+
+    gap:30px;
+}
+
+@media (max-width: 1300px){
+    .box{
+        width: 77%;
+    }
+}
+@media (max-width: 1000px){
+    .box{
+        width: 90%;
+    }
+}
+@media (max-width: 880px){
+    .box{
+        width: 99%;
+    }
+}

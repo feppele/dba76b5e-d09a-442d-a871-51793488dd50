@@ -1,0 +1,60 @@
+.container{
+    z-index: 100;
+    width: 100%-padding;
+    height: 20px-padding;
+    background-color: rgb(49, 121, 255);
+
+    position:sticky;
+    top: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+
+}
+
+.warenkorbWrapper{
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+.warenkorbWrapper:hover{
+    opacity: 0.8;
+}
+.warenkorbImg{
+    position: relative;
+    bottom: -10px;
+
+    height: 44px;
+}
+
+.kreis{
+    position: relative;
+    top: -50px;
+    right: -30px;
+    background-color: red;
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+
+.logo{
+
+    font-size: 30px;
+    cursor: pointer;
+    color:white;
+}
+
+.rightWrapper{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 40px;
+}
