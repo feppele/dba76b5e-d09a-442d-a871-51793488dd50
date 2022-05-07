@@ -1,15 +1,18 @@
 import classes from './HeaderBox.module.css';
+import {niceTime} from '../../helperFunctions'
 
 import britishFlag from '../../images/british.png'
 
 function HeaderBox(props){
 
-    const firstDate = props.eventPeriod.firstDate
-    const lastDate = props.eventPeriod.lastDate
+    const firstDate = niceTime(props.eventPeriod.firstDate)
+    const lastDate = niceTime(props.eventPeriod.lastDate)
 
 
     return (
         <div className={classes.container}>
+
+            <div className={classes.text}> All public events</div>
 
             <div className={classes.box}>
 
@@ -22,19 +25,13 @@ function HeaderBox(props){
 
                 <div className={classes.textBox}>
 
-                    {firstDate} - {lastDate}
+                    {firstDate.weekday} {firstDate.day} {firstDate.month} {firstDate.year} - {lastDate.weekday} {lastDate.day} {lastDate.month} {lastDate.year}
 
                 </div>
 
             </div>
 
-            <div className={classes.header}>
-                Public Events
-            </div>
-
-
-
-
+            
 
 
         </div>
