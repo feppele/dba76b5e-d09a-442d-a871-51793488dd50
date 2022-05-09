@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import Warenkorb from './pages/Warenkorb';
 import NavBar from './components/NavBar';
-import {useState} from 'react'
+import { useState, createContext, useContext } from "react";
 
 
 function App() {

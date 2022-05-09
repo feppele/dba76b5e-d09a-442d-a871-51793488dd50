@@ -23,7 +23,7 @@
 }
 
 .middle{
-    height: 70%;
+    height: 300px;
     width: 100%;
 }
 
@@ -46,6 +46,7 @@
 }
 .dateBoxWithImg{
     margin-top: 5px;
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
     gap:10px;
@@ -62,7 +63,7 @@
 .img{
     height: 100%;
     width: 100%;
-    object-fit: fill;
+    object-fit: cover;
     cursor: pointer;
 }
 .buttonBox{

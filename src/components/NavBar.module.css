@@ -51,6 +51,9 @@
     cursor: pointer;
     color:white;
 }
+.logo:hover{
+    color: rgb(47, 45, 70);
+}
 
 .rightWrapper{
     display: flex;

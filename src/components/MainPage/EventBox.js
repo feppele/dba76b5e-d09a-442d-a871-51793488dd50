@@ -29,11 +29,14 @@ function EventBox(props){
 
     const [flyerModal,setFlyerModal] =useState(false)
 
+    var popupText
     var plusMinusImg
     if(props.plusImg){
         plusMinusImg= addImg
+        popupText="add to cart"
     }else{
         plusMinusImg= minusImg
+        popupText="remove"
     }
 
     function openFlyer(){
@@ -95,7 +98,7 @@ function EventBox(props){
 
             <div className={classes.buttonBox}>
 
-                <MiniButton onButtonClicked={()=>props.addButtonClicked(eventData._id)} img={plusMinusImg} popupText={"add to cart"}/>
+                <MiniButton onButtonClicked={()=>props.addButtonClicked(eventData._id)} img={plusMinusImg} popupText={ popupText}/>
 
             </div>
 

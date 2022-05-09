@@ -21,18 +21,20 @@ function MainPage(props){
     console.log(allEvents)
 
     async function getData(){
-        console.log("GETDATA FUNC")
         // fetch all events in JSON
         var events = await fetch("https://tlv-events-app.herokuapp.com/events/uk/london").then(res => {return res.json()})
-
 
         // filters the warenkorbEvents from all events
         events =  events.filter(event => !props.warenkorbEvents.some(warenkEvent=> warenkEvent._id == event._id) )
 
         //filters the searchValue from all events
-        if(props.searchValue !==""){
-            events =  events.filter(event =>   event.venue.name.includes(props.searchValue)  )
-
+        if(props.searchValue!==""){
+            events = events.filter(event =>
+                // search for Location, Title, Artists
+                event.venue.name.includes(props.searchValue) ||
+                event.title.includes(props.searchValue) ||
+                event.artists.filter(artist=> artist.name.includes(props.searchValue)).length>0
+            )
         }
 
         // get unique Days from all events
@@ -42,7 +44,7 @@ function MainPage(props){
 
         // put all events which are on the same date in one array
         // create a array of all there arrays
-        // [ [date1,date1] , [date2,date2] , ... ] 
+        // [ [date1,date1] , [date2,date2] , ... ]
         var eventsArray = []
         uniqueDates.forEach(date =>{
             eventsArray.push(events.filter(ele => ele.date==date ))
@@ -63,11 +65,8 @@ function MainPage(props){
 
     useEffect(() => {
         getData()
-    },[props.searchValue])
+    },[props])
 
-
-
-    //console.log(warenkorb)
 
     return (
         <div className={classes.container}>
@@ -77,7 +76,6 @@ function MainPage(props){
                 <HeaderBox eventPeriod ={eventPeriod}/>
 
                 {allEvents.map(allEventsFromOneDay => < DayBox callbackFromDayBoxToApp={props.callbackFromDayBoxToApp} allEventsFromThisDay={allEventsFromOneDay}  />  )}
-
 
             </div>
 

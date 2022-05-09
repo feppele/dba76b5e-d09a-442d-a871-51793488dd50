@@ -1,5 +1,5 @@
 import classes from './DayBox.module.css';
-import {useState,useEffect} from 'react'
+import { useState, useEffect, createContext, useContext } from "react";
 import {niceTime} from '../../helperFunctions'
 import EventBox from './EventBox'
 
@@ -10,6 +10,11 @@ import EventBox from './EventBox'
 function DayBox(props){
 
     const [allEvents,setAllEvents] = useState(props.allEventsFromThisDay)
+
+    // When props change update allEvents
+    useEffect(()=>{
+        setAllEvents(props.allEventsFromThisDay)    
+    },[props])
 
     // when EventBoxes are added to cart they are deletet from the "allEvents"-Array.
     // if "allEvents"-Array is empty return null
@@ -31,6 +36,7 @@ function DayBox(props){
     }
 
 
+    
 
 
     return (
