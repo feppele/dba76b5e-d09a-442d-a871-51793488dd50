@@ -1,84 +1,105 @@
 import classes from './MainPage.module.css';
 import React, {useState,useEffect,useHistory} from 'react';
+import {Button,Input,ListItemButton,ListItemText,List,ListItemIcon} from '@mui/material';
 
-//components
-import HeaderBox from '../components/MainPage/HeaderBox'
-import DayBox from '../components/MainPage/DayBox'
+import { create } from 'ipfs-http-client'
 
 
-//images
 
-//props.callbackFromDayBoxToApp (function) is injected from App.js and gives it to <DayBox />
-// Daybox gives all warenkorbEvents with this callbach to App.js
-//props.warenkorbEvents from App.js. delete these from the "allEvents"-Array, because after rerender
-//props.searchVaule from App.js
 function MainPage(props){
 
+    const [uploads,setUploads] = useState([])
 
-    const [allEvents,setAllEvents] = useState([])
-    const [eventPeriod,setEventPeriod] = useState({})
+    //document.cookie = "uploads=";
 
-    console.log(allEvents)
+    function getCookies() {
+        var cookies = document.cookie.split(';').reduce(
+            (cookies, cookie) => {
+                const [name, val] = cookie.split('=').map(c => c.trim());
+                cookies[name] = val;
+                return cookies;
+            }, {});
+        return cookies;
+    }
 
-    async function getData(){
-        // fetch all events in JSON
-        var events = await fetch("https://tlv-events-app.herokuapp.com/events/uk/london").then(res => {return res.json()})
+    // add Upload-Array to Cookie
+    function addUploads(newUpload){
+        var uploads =getCookies().uploads || []
 
-        // filters the warenkorbEvents from all events
-        events =  events.filter(event => !props.warenkorbEvents.some(warenkEvent=> warenkEvent._id == event._id) )
+        if(newUpload === undefined ||newUpload === "") return
+        uploads = uploads + "|" + newUpload
 
-        //filters the searchValue from all events
-        if(props.searchValue!==""){
-            events = events.filter(event =>
-                // search for Location, Title, Artists
-                event.venue.name.includes(props.searchValue) ||
-                event.title.includes(props.searchValue) ||
-                event.artists.filter(artist=> artist.name.includes(props.searchValue)).length>0
-            )
-        }
-
-        // get unique Days from all events
-        var allDates = []
-        events.forEach(ele =>{ allDates.push(ele.date)})
-        var uniqueDates = allDates.filter((value, index, self) => {return self.indexOf(value) === index})
-
-        // put all events which are on the same date in one array
-        // create a array of all there arrays
-        // [ [date1,date1] , [date2,date2] , ... ]
-        var eventsArray = []
-        uniqueDates.forEach(date =>{
-            eventsArray.push(events.filter(ele => ele.date==date ))
-        })
-
-        //sort the eventsArray by date from early to late
-        var sortEventsArray= eventsArray.sort((date1, date2) => new Date(date1[0].date) - new Date(date2[0].date));
-        //console.log(sortEventsArray)
-
-        // set State "allEvents"
-        setAllEvents(sortEventsArray)
-
-        // determine date of first and last event for the header of the page
-        // and set State "eventPeriod"
-        setEventPeriod({firstDate: sortEventsArray[0][0].date,lastDate:  sortEventsArray[sortEventsArray.length-1][0].date})
+        document.cookie = `uploads=${uploads}`
 
     }
 
-    useEffect(() => {
-        getData()
-    },[props])
+    // get Upload-Array from Cookie
+    function getUploads(){
+        var uploads =getCookies().uploads || ""
+        return uploads.split("|")
+    }
+
+    // setUpload State with Upload array from Cookie
+    useEffect(()=>{
+        setUploads(getUploads())
+    },[])
+
+
+    const hiddenFileInput = React.useRef(null);
+    function clickOnHiddenInput(event){
+        hiddenFileInput.current.click(event);
+    }
+
+    async function uploadToIpfs(event){
+
+        const uploadFile= event.target.files[0]
+        var addUrl
+
+        try {
+            const client = create('https://ipfs.infura.io:5001/api/v0')
+            const added = await client.add(event.target.files[0])
+            addUrl = `https://ipfs.infura.io/ipfs/${added.path}`
+        } catch (error) {
+            console.log('Error uploading file: ', error)
+        }
+
+        // add Url Cookie-Array
+        addUploads(addUrl)
+        // add to State-Array
+        setUploads([...uploads,addUrl])
+    }
 
 
     return (
         <div className={classes.container}>
+            <img className={classes.background} src={"https://wallpaperaccess.com/full/2154269.jpg"}></img>
 
-            <div className={classes.box}>
+            <div className={classes.uploadBox}>
+                <input ref={hiddenFileInput} id ="imageInput" type="file" name="file" onChange={uploadToIpfs} hidden />
+                <Button onClick={clickOnHiddenInput}  variant="contained">{"Choose file & upload to IPFS"}</Button>
+            </div>
 
-                <HeaderBox eventPeriod ={eventPeriod}/>
+            <div className={classes.succsesfull}>
 
-                {allEvents.map(allEventsFromOneDay => < DayBox callbackFromDayBoxToApp={props.callbackFromDayBoxToApp} allEventsFromThisDay={allEventsFromOneDay}  />  )}
 
             </div>
 
+            <div className={classes.allUploads}>
+
+            <div className={classes.h1}> Your Uploads</div>
+
+            <List reverse>
+
+                {uploads.reverse().map(ele=> <ListItemButton component="a" href={ele} target="_blank">   <ListItemIcon><img className={classes.buttonImg} src={ele}/></ListItemIcon> <ListItemText primary={ele} /> </ListItemButton>
+
+                )}
+
+
+            </List>
+            </div>
+
+
+            
         </div>
     );
 }

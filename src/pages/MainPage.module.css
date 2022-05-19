@@ -1,35 +1,59 @@
 .container{
-    z-index: 100;
     width: 100%;
-    background-color: white;
+    min-height: 100vh;
+    background-color: rgb(39, 39, 39);
 
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.uploadBox{
+    margin-top: 30px;
+}
+
+.background{
+    height: 120vh;
+    opacity: 0.3;
+
+    position: absolute;
 
 }
 
-.box{
+
+.allUploads{
+    z-index: 2;
+    width: 70%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    width: 70%;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px 1px rgb(20, 99, 246);;
+    background-color: white;
 
-    gap:30px;
 }
 
-@media (max-width: 1300px){
-    .box{
-        width: 77%;
-    }
+.h1{
+    font-size: 30px;
+    margin: 10px;
+    color: rgb(33, 83, 248);
 }
-@media (max-width: 1000px){
-    .box{
+
+.buttonImg{
+    height: 30px;
+    width: 30px;
+    object-fit: scale-down;
+}
+
+
+@media (max-width: 800px) {
+    .allUploads{
         width: 90%;
     }
-}
-@media (max-width: 880px){
-    .box{
-        width: 99%;
-    }
+    
 }
